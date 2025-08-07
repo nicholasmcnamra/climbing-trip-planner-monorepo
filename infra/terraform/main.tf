@@ -12,7 +12,7 @@ resource "aws_instance" "app_server" {
     vpc_security_group_ids = [aws_security_group.app_sg.id]
 
     provisioner "file" {
-        source = "../docker-compose"
+        source = "infra/docker-compose"
         destination = "/home/ubuntu/app"
     }
 
