@@ -1,83 +1,122 @@
-import { it } from "node:test";
 import { createContext, RefObject, useContext, useRef, useState } from "react";
+import { apiClient } from "../App";
+import { ADD_ITINERARY } from "../GraphQL/AddItinerary";
+import { ADD_CLIMB } from "../GraphQL/AddClimb";
+import { getGrade, getGradeType } from "../functions";
 
 export type Trip = {
-    selectedArea: any | null,
-    selectedCrags: any[]
-    startDate: Date | null,
-    endDate: Date | null,
-    gearList: any[],
-    itinerary: {
-        [area: string]: any[]; //will eventually be Climb[]
-    };
+    selectedArea: any | null;
+    startDate: Date | null;
+    endDate: Date | null;
+    itineraryId: string | null;
+    addedClimbs: { [climbId: string]: any };
 };
 
 export type TripContextType = {
     trip: RefObject<Trip>;
-    addClimbToItinerary: (areaId: string, climb: any) => void;
-    removeClimbFromItinerary: (areaId: string, climbId: string) => void;
-    isClimbInItinerary: (areaId: string, climbId: string) => boolean;
+    createItinerary: (name: string) => Promise<void>;
+    addClimbToItinerary: (climb: any, crag: any) => Promise<void>;
+    removeClimbFromItinerary: (climbId: string) => Promise<void>;
+    isClimbInItinerary: (climbId: string) => boolean;
 };
+
 export const TripContext = createContext<TripContextType | null>(null);
 
 export const useTrip = () => {
     const context = useContext(TripContext);
-    if (!context) {
-        throw new Error("useTrip must be used within a TripProvider");
-    }
+    if (!context) throw new Error("useTrip must be used within a TripProvider");
     return context;
-}
+};
 
-export const TripProvider = ({ children }:any) => {
+export const TripProvider = ({ children }: any) => {
     const trip = useRef<Trip>({
         selectedArea: null,
-        selectedCrags: [],
         startDate: null,
         endDate: null,
-        gearList: [],
-        itinerary: {}
+        itineraryId: null,
+        addedClimbs: {}
     });
 
-    const [toggleAdded, setToggleAdded] = useState<boolean>(false);
+    const [toggle, setToggle] = useState(false);
 
-    const addClimbToItinerary = (areaId: string, climb: any) => {
-        const itinerary = trip.current.itinerary;
+    const createItinerary = async (name: string) => {
+        const { data } = await apiClient.mutate({
+            mutation: ADD_ITINERARY,
+            variables: { name }
+        });
 
-        if (!itinerary[areaId]) {
-            itinerary[areaId] = [];
+        const newItinerary = data?.createItinerary;
+        if (!newItinerary) {
+            throw new Error("No itinerary returned.");
         }
 
-        const alreadyAdded = itinerary[areaId].some((c:any) => c.id === climb.id);
-        if (!alreadyAdded) {
-            itinerary[areaId].push(climb);
-            setToggleAdded(prev => !prev);
-        }
+        trip.current.itineraryId = newItinerary.id;
+        trip.current.addedClimbs = {};
+        setToggle(prev => !prev);
     };
 
-    const removeClimbFromItinerary = (areaId: string, climbId: string) => {
-        const itinerary = trip.current.itinerary;
-
-        if (itinerary[areaId]) {
-            itinerary[areaId] = itinerary[areaId].filter((c:any) => c.id !== climbId);
-
-            if (itinerary[areaId].length === 0) {
-                delete itinerary[areaId];
+    const addClimbToItinerary = async (climb: any, crag: any) => {
+        if (!trip.current.itineraryId) return;
+        console.log(climb)
+        const { data } = await apiClient.mutate({
+            mutation: ADD_CLIMB,
+            variables: {
+                itineraryId: trip.current.itineraryId,
+                climb: {
+                    uuid: climb.uuid,
+                    name: climb.name,
+                    grade: getGrade(climb.grades),
+                    type: getGradeType(climb.type).join(", "),
+                    crag: {
+                        uuid: crag.uuid,
+                        name: crag.area_name,
+                        area: trip.current.selectedArea?.area_name || ""
+                    }
+                }
             }
-            setToggleAdded(prev => !prev);
-        }
+        });
+
+        trip.current.addedClimbs[climb.uuid] = { 
+            ...climb, 
+            crag: {
+                uuid: crag.uuid,
+                name: crag.area_name,
+                area: crag.area || "",
+            },
+            itineraryId: trip.current.itineraryId
+        };
+        setToggle(prev => !prev);
+        console.log(data);
     };
 
-    const isClimbInItinerary = (area: string, climbId: string): boolean => {
-        const itinerary = trip.current.itinerary;
-        return (
-            itinerary[area]?.some((c:any) => c.id === climbId) ?? false
-        );
+    const removeClimbFromItinerary = async (climbId: string) => {
+        if (!trip.current.itineraryId) return;
+
+        // const { data } = await apiClient.mutate({
+        //     mutation: REMOVE_CLIMB,
+        //     variables: {
+        //         itineraryId: trip.current.itineraryId,
+        //         climbId
+        //     }
+        // });
+
+        delete trip.current.addedClimbs[climbId];
+        setToggle(prev => !prev);
+    };
+
+    const isClimbInItinerary = (climbId: string) => {
+        return !!trip.current.addedClimbs[climbId];
     };
 
     return (
-        <TripContext.Provider value={{trip, addClimbToItinerary, removeClimbFromItinerary, isClimbInItinerary}}>
+        <TripContext.Provider value={{
+            trip,
+            createItinerary,
+            addClimbToItinerary,
+            removeClimbFromItinerary,
+            isClimbInItinerary
+        }}>
             {children}
         </TripContext.Provider>
-    )
-}
-
+    );
+};

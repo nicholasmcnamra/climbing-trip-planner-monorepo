@@ -17,6 +17,11 @@ export const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+export const apiClient = new ApolloClient({
+  uri: 'http://localhost:8080/graphql',
+  cache: new InMemoryCache(),
+})
+
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -41,7 +46,7 @@ const theme = createTheme({
 function App() {
   return (
     <TripProvider>
-      <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={apiClient}>
         <ThemeProvider theme={theme}>
         <Box className="App">
           <Navbar></Navbar>
@@ -54,7 +59,7 @@ function App() {
             </Router>
         </Box>
         </ThemeProvider>
-      </ApolloProvider>
+        </ApolloProvider>
     </TripProvider>
   );
 }

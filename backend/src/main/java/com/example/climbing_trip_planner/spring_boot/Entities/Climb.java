@@ -1,21 +1,23 @@
 package com.example.climbing_trip_planner.spring_boot.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
-@Setter
-@Getter
+@Data
 @Entity
+@RequiredArgsConstructor
 public class Climb {
 
     @Id
-    @Column(columnDefinition = "uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @Column(unique = true, nullable = false)
     private UUID uuid;
 
     private String name;

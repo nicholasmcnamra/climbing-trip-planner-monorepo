@@ -31,7 +31,7 @@ export const CragAccordion:React.FC<{ crag:any, climbs:any, }> = ({ crag, climbs
                                 </Typography>
                             </Box>
                             <Box>
-                                <IconButton onClick={() => removeClimbFromItinerary(crag, climb.id)}>
+                                <IconButton onClick={() => removeClimbFromItinerary(climb.id)}>
                                     <Delete/>
                                 </IconButton>
                             </Box>

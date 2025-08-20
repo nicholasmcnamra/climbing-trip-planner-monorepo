@@ -10,7 +10,7 @@ import { ClimbingAreaMap } from "../Map/ClimbingAreaMap";
 
 const TripPlanner:React.FC = () => {
     const [activeSection, setActiveSection] = useState("Crags");
-    const { trip } = useTrip();
+    const { trip, addClimbToItinerary } = useTrip();
     const [selectedClimb, setSelectedClimb] = useState<any | null>(null);
     const [parentCrag, setParentCrag] = useState<any | null>(null);
     const theme = useTheme();
@@ -24,7 +24,16 @@ const TripPlanner:React.FC = () => {
                 <ClimbDescription
                     selectedClimb={selectedClimb}
                     parentCrag={parentCrag}
-                    setSelectedClimb={setSelectedClimb}
+                    onAddClimb={ async () => {
+                        if (trip.current.selectedArea?.id) {
+                            await addClimbToItinerary({
+                                ...selectedClimb, 
+                            },
+                            parentCrag);
+                            setSelectedClimb(null);
+                            setParentCrag(null);
+                        }
+                    }}
                 />
             );
         }

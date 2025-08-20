@@ -98,7 +98,7 @@ const CragSelection:React.FC<{ onClimbSelect: (climb: any, crag: any) => void }>
                                     }}
                                 >
                                     <ClimbCard 
-                                        area={selectedCrag.area_name} 
+                                        crag={selectedCrag} 
                                         climb={climb} 
                                         onClick={() => onClimbSelect(climb, selectedCrag) }
                                     />

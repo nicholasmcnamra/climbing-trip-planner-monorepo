@@ -6,14 +6,22 @@ import { CragAccordion } from "./CragAccordion";
 const Itinerary:React.FC = () => {
     const { trip, removeClimbFromItinerary } = useTrip();
 
-    const itinerary = trip.current.itinerary;
+    const itinerary = Object.values(trip.current.addedClimbs) || [];
 
-    console.log(trip);
+    const climbsByCrag = itinerary.reduce((acc: Record<string, any[]>, climb: any) => {
+        const cragName = climb.crag?.name || "Unknown Crag";
+        if (!acc[cragName]) acc[cragName] = [];
+        acc[cragName].push(climb);
+        return acc;
+    }, {} as Record<string, any[]>);
+
+    console.log(itinerary);
+
     return (
         <Box>
             <Typography variant="h5" gutterBottom>Itinerary</Typography>
             <List>
-                {Object.entries(itinerary).map(([area,climbs]) => (
+                {Object.entries(climbsByCrag).map(([area,climbs]) => (
                     <Box sx={{mb: 3}}>
                         <Typography variant="h6">{area || "Unknown Area"}</Typography>
                         <Divider sx={{ mb: 1 }}>

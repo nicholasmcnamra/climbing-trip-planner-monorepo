@@ -51,7 +51,7 @@ public class ItineraryServiceImpl implements ItineraryService {
     @Override
     public Itinerary addClimbToItinerary(Long itineraryId, ClimbInput climbInput) {
         Itinerary itinerary = getById(itineraryId);
-        Crag crag = cragRepository.findById(climbInput.crag().uuid())
+        Crag crag = cragRepository.findByUuid(climbInput.crag().uuid())
                 .orElseGet(() -> {
                     Crag newCrag = new Crag();
                     newCrag.setUuid(climbInput.crag().uuid());
@@ -60,7 +60,7 @@ public class ItineraryServiceImpl implements ItineraryService {
                     return cragRepository.save(newCrag);
                 });
 
-        Climb climb = climbRepository.findById(climbInput.uuid())
+        Climb climb = climbRepository.findByUuid(climbInput.uuid())
                         .orElseGet(() -> {
                             Climb newClimb = new Climb();
                             newClimb.setUuid(climbInput.uuid());

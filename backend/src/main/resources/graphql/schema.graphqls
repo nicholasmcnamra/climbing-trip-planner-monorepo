@@ -24,6 +24,7 @@ input ClimbInput {
     uuid: ID!
     name: String!
     grade: String
+    type: String
     crag: CragInput!
 }
 

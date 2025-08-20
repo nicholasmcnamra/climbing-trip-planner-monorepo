@@ -9,11 +9,19 @@ export type Climb = {
     type: string;
 }
 
-export const ClimbCard:React.FC<{ area: string, climb: Climb, onClick: () => void }> = ({ area, climb, onClick }) => {
+export type Crag = {
+    uuid: string;
+    area_name: string;
+    [key: string]: any;
+}
+
+export const ClimbCard:React.FC<{ crag: any, climb: Climb, onClick: () => void }> = ({ crag, climb, onClick }) => {
     const { addClimbToItinerary, removeClimbFromItinerary, isClimbInItinerary } = useTrip();
     const grade = getGrade(climb.grades);
     const types = getGradeType(climb.type);
     const theme = useTheme();
+
+    console.log(climb);
 
     return (
         <Card
@@ -35,9 +43,9 @@ export const ClimbCard:React.FC<{ area: string, climb: Climb, onClick: () => voi
                     ))}
                 </Stack>
                 
-                { !isClimbInItinerary(area, climb.id) ?
+                { !isClimbInItinerary(climb.id) ?
                     <Button 
-                        onClick={(e) => {e.stopPropagation(); addClimbToItinerary(area, climb)}}
+                        onClick={(e) => {e.stopPropagation(); addClimbToItinerary(climb, crag)}}
                         sx={{
                             backgroundColor: theme.palette.secondary.dark,
                             color: "white",
@@ -51,7 +59,7 @@ export const ClimbCard:React.FC<{ area: string, climb: Climb, onClick: () => voi
                     </Button>
                 :
                     <Button 
-                        onClick={(e) => {e.stopPropagation(); removeClimbFromItinerary(area, climb.id)}}
+                        onClick={(e) => {e.stopPropagation(); removeClimbFromItinerary(climb.id)}}
                         sx={{
                         backgroundColor: theme.palette.secondary.dark,
                         color: "white",

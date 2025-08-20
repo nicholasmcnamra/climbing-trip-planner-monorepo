@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { ClimbCard } from "../Components/ClimbCard";
 import { getGrade, getGradeType } from "../functions";
 
-const ClimbDescription:React.FC<{ selectedClimb: any, parentCrag: any, setSelectedClimb: (climb: any) => void }> = ({ selectedClimb, parentCrag, setSelectedClimb }) => {
+const ClimbDescription:React.FC<{ selectedClimb: any, parentCrag: any, onAddClimb: (climb: any) => void }> = ({ selectedClimb, parentCrag, onAddClimb }) => {
 
   if (!selectedClimb) {
     return <Typography>Climb not found.</Typography>;
@@ -27,10 +27,10 @@ const ClimbDescription:React.FC<{ selectedClimb: any, parentCrag: any, setSelect
         >
           {parentCrag.climbs.map((climb: any) => (
             <ClimbCard 
-            area={parentCrag.area_name} 
+            crag={parentCrag} 
             climb={climb} 
             key={climb.id} 
-            onClick={() => setSelectedClimb(climb)}
+            onClick={() => onAddClimb(climb)}
               />
           ))}
         </Box>
