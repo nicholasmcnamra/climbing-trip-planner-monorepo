@@ -1,9 +1,9 @@
-package Services.impl;
+package com.example.climbing_trip_planner.spring_boot.Services.impl;
 
-import Entities.Area;
-import Entities.Crag;
-import Repositories.CragRepository;
-import Services.CragService;
+import com.example.climbing_trip_planner.spring_boot.Entities.Area;
+import com.example.climbing_trip_planner.spring_boot.Entities.Crag;
+import com.example.climbing_trip_planner.spring_boot.Repositories.CragRepository;
+import com.example.climbing_trip_planner.spring_boot.Services.CragService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

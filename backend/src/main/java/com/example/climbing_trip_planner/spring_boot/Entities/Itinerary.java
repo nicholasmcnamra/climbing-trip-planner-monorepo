@@ -1,4 +1,4 @@
-package Entities;
+package com.example.climbing_trip_planner.spring_boot.Entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +17,8 @@ public class Itinerary {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
 
     private LocalDate startDate;
 

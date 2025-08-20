@@ -1,10 +1,8 @@
-package Repositories;
+package com.example.climbing_trip_planner.spring_boot.Repositories;
 
-import Entities.Area;
-import Entities.Crag;
-import jakarta.persistence.Id;
+import com.example.climbing_trip_planner.spring_boot.Entities.Area;
+import com.example.climbing_trip_planner.spring_boot.Entities.Crag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.UUID;

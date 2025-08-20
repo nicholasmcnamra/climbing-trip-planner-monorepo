@@ -1,6 +1,6 @@
-package Repositories;
+package com.example.climbing_trip_planner.spring_boot.Repositories;
 
-import Entities.Area;
+import com.example.climbing_trip_planner.spring_boot.Entities.Area;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package Services;
+package com.example.climbing_trip_planner.spring_boot.Services;
 
 import java.util.List;
 

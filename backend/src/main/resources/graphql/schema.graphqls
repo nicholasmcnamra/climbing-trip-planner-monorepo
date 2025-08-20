@@ -1,0 +1,49 @@
+type Climb {
+    id: ID!
+    uuid: ID!
+    name: String!
+    type: String
+    grade: String
+    crag: Crag!
+}
+
+type Crag {
+    id: ID!
+    uuid: ID!
+    name: String!
+    area: String
+}
+
+type Itinerary {
+    id: ID!
+    name: String
+    climbs: [Climb]!
+}
+
+input ClimbInput {
+    uuid: ID!
+    name: String!
+    grade: String
+    crag: CragInput!
+}
+
+input CragInput {
+    uuid: ID!
+    name: String!
+    area: String
+}
+
+
+type Query {
+    itineraries: [Itinerary!]!
+    itinerary(id: ID!): Itinerary
+    climbsByItinerary(itineraryId: ID!): [Climb!]!
+}
+
+type Mutation {
+    createItinerary(name: String!): Itinerary!
+    deleteItinerary(id: ID!): Boolean!
+
+    addClimbToItinerary(itineraryId: ID!, climb: ClimbInput!): Itinerary!
+    removeClimbFromItinerary(itineraryId: ID!, climbId: ID!): Itinerary!
+}

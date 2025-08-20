@@ -1,6 +1,6 @@
-package Repositories;
+package com.example.climbing_trip_planner.spring_boot.Repositories;
 
-import Entities.Climb;
+import com.example.climbing_trip_planner.spring_boot.Entities.Climb;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

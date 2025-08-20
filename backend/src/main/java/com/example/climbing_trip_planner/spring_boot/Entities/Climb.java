@@ -1,4 +1,4 @@
-package Entities;
+package com.example.climbing_trip_planner.spring_boot.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +22,10 @@ public class Climb {
 
     @ManyToOne
     private Crag crag;
+
+    private String grade;
+
+    private String type;
 
     @ManyToOne
     private Itinerary itinerary;
