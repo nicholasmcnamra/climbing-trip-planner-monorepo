@@ -13,7 +13,7 @@ export const ClimbingAreaMap:React.FC = () => {
         popupAnchor: [0, -94]
     })
 
-    const crags: any[] = trip?.current?.selectedArea?.children?.map((area: { area: any; }) => area)
+    const crags: any[] = trip?.selectedArea?.children?.map((area: { area: any; }) => area)
 
     console.log("Crags:", crags);
 

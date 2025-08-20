@@ -6,7 +6,7 @@ import { CragAccordion } from "./CragAccordion";
 const Itinerary:React.FC = () => {
     const { trip, removeClimbFromItinerary } = useTrip();
 
-    const itinerary = Object.values(trip.current.addedClimbs) || [];
+    const itinerary = Object.values(trip.addedClimbs) || [];
 
     const climbsByCrag = itinerary.reduce((acc: Record<string, any[]>, climb: any) => {
         const cragName = climb.crag?.name || "Unknown Crag";

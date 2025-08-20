@@ -24,7 +24,7 @@ const Explore = () => {
                         mb: 2
                     }}
                 >
-                    {trip?.current?.selectedArea?.area_name}
+                    {trip?.selectedArea?.area_name}
                 </Box>
                 <List
                     sx={{
@@ -34,7 +34,7 @@ const Explore = () => {
                     }}
                     
                 >
-                    {trip?.current?.selectedArea?.children?.map((area:any, index:number) => (
+                    {trip?.selectedArea?.children?.map((area:any, index:number) => (
                         <AreaCard 
                         crag={area}
                         />

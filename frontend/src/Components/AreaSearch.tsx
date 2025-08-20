@@ -4,7 +4,7 @@ import { useRef } from "react"
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { useNavigate } from "react-router-dom";
-import { useTrip } from "../Context/TripContext";
+import { Trip, useTrip } from "../Context/TripContext";
 import { apolloClient } from "../App";
 
 const AreaSearch:React.FC = () => {
@@ -13,7 +13,7 @@ const AreaSearch:React.FC = () => {
     const startDate = useRef<Date | null>(null);
     const endDate = useRef<Date | null>(null);
     // const [selectedArea, setSelectedArea] = useState<any>(null);
-    const { trip, createItinerary } = useTrip();
+    const { trip, createItinerary, setTrip } = useTrip();
     const theme = useTheme();
 
     const handleSubmit = async (e:React.FormEvent) => {
@@ -35,13 +35,13 @@ const AreaSearch:React.FC = () => {
 
         await createItinerary(areaWithMostChildren.area_name);
 
-        trip.current.selectedArea = areaWithMostChildren;
-        trip.current.startDate = startDate.current;
-        trip.current.endDate = endDate.current;
-        // trip.current.itinerary = {
-        //     [areaWithMostChildren.uuid]: newItinerary
-        // };
-        // setSelectedArea(areaWithMostChildren);
+
+        setTrip((prev: Trip) => ({
+            ...prev,
+            selectedArea: areaWithMostChildren,
+            startDate: startDate.current,
+            endDate: endDate.current
+        }));
         navigate("/trip-planner");
         }
     }

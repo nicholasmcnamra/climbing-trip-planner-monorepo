@@ -25,7 +25,7 @@ const TripPlanner:React.FC = () => {
                     selectedClimb={selectedClimb}
                     parentCrag={parentCrag}
                     onAddClimb={ async () => {
-                        if (trip.current.selectedArea?.id) {
+                        if (trip.selectedArea?.id) {
                             await addClimbToItinerary({
                                 ...selectedClimb, 
                             },
@@ -111,7 +111,7 @@ const TripPlanner:React.FC = () => {
                         borderBottomColor: theme.palette.secondary.dark,
                     }}
                 >
-                    Trip to {trip.current?.selectedArea?.area_name || "[Selected Area]"}
+                    Trip to {trip?.selectedArea?.area_name || "[Selected Area]"}
                 </Typography>
                 {renderMainContent()}
             </Box>

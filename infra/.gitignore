@@ -2,5 +2,9 @@
 
 infra/terraform/*
 
+infra/terraform/.terraform/
+*.tfstate
+*.tfstate.backup
+
 !infra/terraform/main.tf
 !infra/terraform/variables.tf
