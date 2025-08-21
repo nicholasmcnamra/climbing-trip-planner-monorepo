@@ -30,8 +30,14 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=http://backend:8080/graphql
+    
+    environment:
+      - REACT_APP_API_URL=http://backend:8080/graphql
+
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - backend
 
